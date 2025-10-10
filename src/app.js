@@ -2,21 +2,31 @@ const express = require("express");
 const app = express(); //calling a express function
 
 // app.use method use for authentication
-app.use("/",(req,res)=>{
-    res.send("world");
+
+// app.use("/", (req, res) => {
+//   res.send("world");
+// });
+
+// app.use("/hello",(req,res)=>{
+//     res.send("namaste dsa");
+// })
+
+// app.use("/home", (req,res)=>{
+//     res.send("server is crashed");
+// })
+
+app.get("/abc", (req,res) =>{
+    console.log(req.query);
+    res.send({firstName: "Ashutosh",id:1234, city:"gzb"});
+})
+app.post("/about", (req,res) => {
+  res.send("this is a post call");
 });
 
-app.use("/hello",(req,res)=>{
-    res.send("namaste dsa");
-})
-
-app.use("/home", (req,res)=>{
-    res.send("ser is crashed");
-})
-
 app.use("/about",(req,res)=>{
-    app.send("this is a new")
+    res.send("this is a new")
 })
+
 
 // get method use for routing
 // app.get("/", (req, res) => {
