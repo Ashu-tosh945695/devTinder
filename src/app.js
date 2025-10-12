@@ -40,28 +40,93 @@ const app = express(); //calling a express function
 
 // handle multiple route handler inside the app.use method----
 
-app.use(
-  "/user",
-  (req, res, next) => {
-    console.log("handler route 1");
-    // res.send("successful request 1");
-    next();
-  },
-  (req, res, next) => {
-    console.log("route handler 2");
-    // res.send("successful request 2");
-    next();
-  },
-  (req, res, next) => {
-    console.log("route handler 3");
-    // res.send("successful requset 3");
-    next();
-  },
-  (req, res, next) => {
-    console.log("route handler 4");
-    res.send("successful requset 4");
-  }
-);
+// app.get(
+//   "/user",
+//   (req, res, next) => {
+//     console.log("handler route 1");
+//     // res.send("successful request 1");
+//     next();
+//   },
+//   (req, res, next) => {
+//     console.log("route handler 2");
+//     // res.send("successful request 2");
+//     next();
+//   },
+//   (req, res, next) => {
+//     console.log("route handler 3");
+//     // res.send("successful requset 3");
+//     next();
+//   },
+//   (req, res, next) => {
+//     console.log("route handler 4");
+//     // res.send("successful requset 4");
+//     next();
+//   }
+// );
+
+
+// Middleware handling request------
+// GET /users => middleware chain => request handler
+
+// app.use("/", (req,res,next) =>{
+     
+//     next(); //given us to express js
+// });
+
+// app.get("/user",(req,res,next)=>{
+//     console.log("handler user route");
+//     next();
+// },
+// (req,res,next)=>{
+//     res.send("response successful")
+// },
+// (req,res,next)=>{
+//     res.send("response successful 2");
+// }
+// );
+
+
+// This is a Middlewares-------  how its work----
+const {
+  userAuthentication,
+  userGetAllData,
+  userDeleteAllData,
+} = require("./middleware/auth");
+
+ app.use("/admin", userGetAllData,userDeleteAllData);
+
+// app.use("/admin",(req,res,next)=>{
+//     console.log("use function call")
+    // res.send("use successful")
+//     next()
+// })
+
+app.post ("/user/login",(req,res) =>{
+    res.send("user is successful")
+})
+app.get("/user/login", userAuthentication,(req,res)=>{
+    //    res.send("user login successfully");
+        // next();
+
+})
+app.get("/admin/getAllData",userGetAllData, (req,res) =>{
+        // res.send("sent all the data")
+});
+app.delete("/admin/delete", userDeleteAllData,(req,res) =>{
+       res.send("delete all the data");
+});
+
+// app.get("/admin/getDeleteData",(req,res)=>{
+//     const Token = "authorizedd";
+//     const authorizedUser = Token === "authorized";
+//     if (!authorizedUser){
+//         res.status(500).send("something went wrong");
+//     } 
+//     else{
+//         res.send("delete all data ");
+//     }
+// })
+
 
 
 app.listen(5555,()=>{
