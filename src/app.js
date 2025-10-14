@@ -1,5 +1,53 @@
 const express = require("express");
-const app = express(); //calling a express function
+const connectDB = require("./config/database");
+const app = express(); //calling a express func tion
+const User = require('./models/user')
+
+
+
+// by using api insert new data into databse
+
+app.post("/signup",async (req,res)=>{
+  const userObj = {
+    firstName: "Ashu",
+    lastName: "singh",
+    email: "ashu@1234",
+    password: "ashu123456",
+    number: "123456789"
+  }
+
+  // creating a new instance of a user mode---
+
+  const user = new User(userObj);
+  await user.save(); //this function retun a promise
+  res.send("data is saved into database");
+
+ 
+})
+
+// how to connect to the database like mongoose-----
+
+connectDB()
+  .then(() => {
+    console.log("databse is created");
+    app.listen(7777, () => {
+      console.log("server is loading");
+    });
+  })
+  .catch((err) => {
+    console.error("databse is not connected",err);
+  });
+
+console.log("page load");
+
+
+
+
+
+
+
+
+
 
 // app.use method use for authentication
 
@@ -87,13 +135,13 @@ const app = express(); //calling a express function
 
 
 // This is a Middlewares-------  how its work----
-const {
-  userAuthentication,
-  userGetAllData,
-  userDeleteAllData,
-} = require("./middleware/auth");
+// const {
+//   userAuthentication,
+//   userGetAllData,
+//   userDeleteAllData,
+// } = require("./middleware/auth");
 
- app.use("/admin", userGetAllData,userDeleteAllData);
+//  app.use("/admin", userGetAllData,userDeleteAllData);
 
 // app.use("/admin",(req,res,next)=>{
 //     console.log("use function call")
@@ -101,20 +149,20 @@ const {
 //     next()
 // })
 
-app.post ("/user/login",(req,res) =>{
-    res.send("user is successful")
-})
-app.get("/user/login", userAuthentication,(req,res)=>{
-    //    res.send("user login successfully");
-        // next();
+// app.post ("/user/login",(req,res) =>{
+//     res.send("user is successful")
+// })
+// app.get("/user/login", userAuthentication,(req,res)=>{
+     //    res.send("user login successfully");
+         // next();
 
-})
-app.get("/admin/getAllData",userGetAllData, (req,res) =>{
+// })
+// app.get("/admin/getAllData",userGetAllData, (req,res) =>{
         // res.send("sent all the data")
-});
-app.delete("/admin/delete", userDeleteAllData,(req,res) =>{
-       res.send("delete all the data");
-});
+// });
+// app.delete("/admin/delete", userDeleteAllData,(req,res) =>{
+//        res.send("delete all the data");
+// });
 
 // app.get("/admin/getDeleteData",(req,res)=>{
 //     const Token = "authorizedd";
@@ -129,9 +177,16 @@ app.delete("/admin/delete", userDeleteAllData,(req,res) =>{
 
 
 
-app.listen(5555,()=>{
-    console.log("server is loading");
-});
+
+
+// how to connect to the database like mongoose-----
+
+
+
+
+
+
+
 
 
 
