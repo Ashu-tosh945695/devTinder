@@ -6,23 +6,58 @@ const User = require('./models/user')
 
 
 // by using api insert new data into databse
+app.use(express.json());
 
 app.post("/signup",async (req,res)=>{
-  const userObj = {
-    firstName: "Ashu",
-    lastName: "singh",
-    email: "ashu@1234",
-    password: "ashu123456",
-    number: "123456789"
-  }
+  console.log(req.body);
+  // const userObj = {
+  //   firstName: "Ashu",
+  //   lastName: "singh",
+  //   email: "ashu@1234",
+  //   password: "ashu123456",
+  //   number: "123456789"
+  // }
 
   // creating a new instance of a user mode---
 
-  const user = new User(userObj);
+
+  const user = new User(req.body);
   await user.save(); //this function retun a promise
   res.send("data is saved into database");
 
+})
+
+// how do you find one user from the database------
+
+app.get("/user", async (req,res) =>{
+  const userEmail = req.body.emailId;
+    try {
+       const users = await User.find({ emailId: userEmail });
+      // const users = await User.findOne({ emailId: userEmail });
+      if (users.length === 0) {
+        res.status(404).send("user not found");
+      } else {
+        res.send(users);
+      }
+    } catch (err) {
+      res.status(400).send("something went wrong");
+    }
  
+
+ 
+  
+});
+
+// feed API get /feed all the users from the databse 
+app.get("/feed",async(req,res)=>{
+  try {
+    const users = await User.find({});
+    res.send(users);
+  } catch (err) {
+    res.status(400).send("something went wrong");
+  }
+  
+
 })
 
 // how to connect to the database like mongoose-----
